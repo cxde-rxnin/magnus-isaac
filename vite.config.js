@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5001', // Change this to your actual backend URL/port
+        target: 'https://port-server-phi.vercel.app/', // Change this to your actual backend URL/port
         changeOrigin: true,
         secure: false,
       }
