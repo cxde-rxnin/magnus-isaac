@@ -95,7 +95,7 @@ const ProjectDetail = () => {
         </button>
 
         <div className="mb-8">
-          <h1 className="text-9xl font-bold text-white mb-8">{project.title}</h1>
+          <h1 className="text-6xl md:text-9xl font-bold text-white mb-8">{project.title}</h1>
           <div className="flex flex-wrap gap-2">
             {project.technologies?.map((tech, index) => (
               <span 
