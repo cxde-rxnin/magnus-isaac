@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// Use relative path '/api' because of Vite proxy setup.
-// In production build, you might need to configure the base URL differently
-// depending on how you deploy frontend and backend.
-const API_BASE_URL = 'api';
+// Use environment variable for API base URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+
+console.log('Using API base URL:', API_BASE_URL);
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -11,7 +11,7 @@ const apiClient = axios.create({
 
 // Function to get the auth token from local storage (or context/state management)
 const getAuthToken = () => {
-    return localStorage.getItem('authToken'); // Example: storing token in localStorage
+    return localStorage.getItem('authToken');
 }
 
 // Add Authorization header if token exists
@@ -25,17 +25,16 @@ apiClient.interceptors.request.use((config) => {
     return Promise.reject(error);
 });
 
-
 // --- Public API Calls ---
 export const fetchProjects = async () => {
     try {
-        console.log('Fetching projects from:', `${API_BASE_URL}/projects`);
+        console.log('Fetching projects from:', API_BASE_URL + '/projects');
         const response = await apiClient.get('/projects');
         
         // Check if the response is HTML (which would indicate an issue)
         const contentType = response.headers['content-type'];
         if (contentType && contentType.includes('text/html')) {
-            console.error('Received HTML instead of JSON. Check your API proxy configuration.');
+            console.error('Received HTML instead of JSON. Check your API configuration.');
             throw new Error('Invalid response format: Expected JSON but received HTML');
         }
         
@@ -76,8 +75,8 @@ export const fetchProjects = async () => {
 // Test function to check API connectivity
 export const testApiConnection = async () => {
     try {
-        // Try directly with fetch instead of axios to isolate issues
-        const response = await fetch(`${window.location.origin}/api/projects`);
+        // Try directly with fetch without using the proxy
+        const response = await fetch(`${API_BASE_URL}/projects`);
         console.log('API test response status:', response.status);
         console.log('API test content type:', response.headers.get('content-type'));
         const text = await response.text();
@@ -129,9 +128,9 @@ export const login = async (email, password) => {
     try {
         const response = await apiClient.post('/auth/login', { email, password });
         if (response.data && response.data.token) {
-            localStorage.setItem('authToken', response.data.token); // Store token
+            localStorage.setItem('authToken', response.data.token);
         }
-        return response.data; // Contains token and user info
+        return response.data;
     } catch (error) {
         console.error("Login error:", error.response?.data || error.message);
         throw error;
@@ -139,19 +138,18 @@ export const login = async (email, password) => {
 };
 
 export const logout = () => {
-     localStorage.removeItem('authToken'); // Clear token on logout
+     localStorage.removeItem('authToken');
 };
 
 export const fetchCurrentUser = async () => {
      const token = getAuthToken();
-     if (!token) return null; // No token, not logged in
+     if (!token) return null;
 
      try {
         const response = await apiClient.get('/auth/me');
-        return response.data.data; // The user object
+        return response.data.data;
      } catch (error) {
          console.error("Error fetching current user:", error.response?.data || error.message);
-         // If token is invalid/expired (401), logout might be appropriate
          if (error.response?.status === 401) {
              logout();
          }
@@ -159,10 +157,7 @@ export const fetchCurrentUser = async () => {
      }
 };
 
-// --- Protected API Calls (Examples) ---
-// Add functions for POST, PUT, DELETE for projects, experience etc.
-// These will automatically include the token due to the interceptor.
-
+// --- Protected API Calls ---
 export const createProject = async (projectData) => {
     try {
         const response = await apiClient.post('/projects', projectData);
@@ -183,4 +178,96 @@ export const updateProject = async (id, projectData) => {
     }
 };
 
-// Add similar functions for deleteProject, createExperience, updateExperience, etc.
+export const deleteProject = async (id) => {
+    try {
+        const response = await apiClient.delete(`/projects/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting project:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
+
+// --- Blog Post API Calls ---
+
+// Fetch all published blog posts
+export const fetchBlogPosts = async () => {
+    try {
+        console.log('Fetching blog posts from:', API_BASE_URL + '/blogposts');
+        const response = await apiClient.get('/blogposts');
+        // Add similar content type checks as in fetchProjects if needed
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching blog posts:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
+// Fetch all blog posts including drafts (for admin panel)
+export const fetchAllBlogPostsAdmin = async () => {
+    try {
+        const response = await apiClient.get('/blogposts/all'); // Requires auth
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching all blog posts (admin):", error.response?.data || error.message);
+        throw error;
+    }
+};
+
+// Fetch a single blog post by ID or slug
+export const fetchBlogPostByIdentifier = async (identifier) => {
+    try {
+        const response = await apiClient.get(`/blogposts/${identifier}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Error fetching blog post ${identifier}:`, error.response?.data || error.message);
+        throw error;
+    }
+};
+
+// Create a blog post
+// blogPostData should be FormData if including files
+export const createBlogPost = async (blogPostData) => {
+    try {
+        // If sending files, headers should be 'multipart/form-data'
+        // Axios usually sets this automatically if FormData is passed as data.
+        const response = await apiClient.post('/blogposts', blogPostData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error creating blog post:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
+// Update a blog post
+// blogPostData should be FormData if including files
+export const updateBlogPost = async (id, blogPostData) => {
+    try {
+        const response = await apiClient.put(`/blogposts/${id}`, blogPostData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return response.data;
+    } catch (error)
+ {
+        console.error("Error updating blog post:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
+// Delete a blog post
+export const deleteBlogPost = async (id) => {
+    try {
+        const response = await apiClient.delete(`/blogposts/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error deleting blog post:", error.response?.data || error.message);
+        throw error;
+    }
+};

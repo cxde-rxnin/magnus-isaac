@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Section from '../components/Section';
-import ProjectCard from '../components/ProjectCard';
-import { fetchProjects, testApiConnection } from '../services/api';
+import BlogCard from '../components/BlogCard';
+import { fetchBlogPosts, testApiConnection } from '../services/api';
 
-const Projects = () => {
-  const [projects, setProjects] = useState([]);
+const Blog = () => {
+  const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [connectionTest, setConnectionTest] = useState(null);
@@ -28,29 +28,29 @@ const Projects = () => {
         console.error('Connection test error:', err);
       }
       
-      // Continue with projects fetch if connection test didn't fail
-      getProjects();
+      // Continue with blog posts fetch if connection test didn't fail
+      getBlogPosts();
     };
     
-    const getProjects = async () => {
+    const getBlogPosts = async () => {
       try {
-        const data = await fetchProjects();
+        const data = await fetchBlogPosts();
         // Ensure data is an array before setting it
         if (Array.isArray(data)) {
-          setProjects(data);
+          setBlogPosts(data);
         } else if (data && typeof data === 'object') {
-          // If data is an object that might contain an array of projects
-          const projectsArray = data.projects || data.data || data.results || [];
-          setProjects(Array.isArray(projectsArray) ? projectsArray : []);
+          // If data is an object that might contain an array of blog posts
+          const blogPostsArray = data.blogPosts || data.data || data.results || [];
+          setBlogPosts(Array.isArray(blogPostsArray) ? blogPostsArray : []);
         } else {
           // Handle unexpected data format
-          setProjects([]);
+          setBlogPosts([]);
           setError('Received invalid data format from server');
           console.error('Invalid data format:', data);
         }
       } catch (err) {
-        setError('Failed to load projects. Please try again later.');
-        console.error('Error fetching projects:', err);
+        setError('Failed to load blog posts. Please try again later.');
+        console.error('Error fetching blog posts:', err);
       } finally {
         setLoading(false);
       }
@@ -60,7 +60,7 @@ const Projects = () => {
   }, []);
 
   return (
-    <Section id="projects" className="bg-black">
+    <Section id="blog" className="bg-black">
       <div className="relative">
         {/* Decorative background */}
         <div className="absolute inset-0 overflow-hidden opacity-5">
@@ -69,9 +69,9 @@ const Projects = () => {
         </div>
       
         <div className="relative">
-          <h2 className="mb-4 text-center text-4xl font-bold text-white md:text-5xl">My Projects</h2>
+          <h2 className="mb-4 text-center text-4xl font-bold text-white md:text-5xl">My Blog</h2>
           <p className="mx-auto mb-6 max-w-3xl text-center text-lg text-slate-300">
-            Explore my portfolio showcasing various projects across different technologies.
+            Explore my latest articles and thoughts on various technologies and development topics.
           </p>
 
           {loading && (
@@ -96,17 +96,17 @@ const Projects = () => {
             </div>
           )}
 
-          {!loading && !error && projects.length > 0 && (
+          {!loading && !error && blogPosts.length > 0 && (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {projects.map(project => (
-                <ProjectCard key={project._id} project={project} />
+              {blogPosts.map(post => (
+                <BlogCard key={post._id} project={post} />
               ))}
             </div>
           )}
 
-          {!loading && !error && projects.length === 0 && (
+          {!loading && !error && blogPosts.length === 0 && (
             <div className="rounded-lg bg-slate-800/40 p-6 text-center backdrop-blur-md">
-              <p className="text-slate-300">No projects found. Add some projects to showcase your work!</p>
+              <p className="text-slate-300">No blog posts found. Check back later for new content!</p>
             </div>
           )}
         </div>
@@ -115,4 +115,4 @@ const Projects = () => {
   );
 };
 
-export default Projects;
+export default Blog;

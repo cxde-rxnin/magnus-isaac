@@ -19,7 +19,7 @@ const Footer = () => {
             href="https://github.com/IrezD" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-400 transition-all duration-300 hover:bg-slate-700 hover:text-blue-400"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-400 transition-all duration-300 hover:bg-slate-700 hover:text-purple-400"
           >
             <FaGithub className="text-lg" />
             <span className="sr-only">GitHub</span>
@@ -28,16 +28,16 @@ const Footer = () => {
             href="https://linkedin.com/in/isaac-ikenna" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-400 transition-all duration-300 hover:bg-slate-700 hover:text-blue-400"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-400 transition-all duration-300 hover:bg-slate-700 hover:text-purple-400"
           >
             <FaLinkedin className="text-lg" />
             <span className="sr-only">LinkedIn</span>
           </a>
           <a 
-            href="https://linkedin.com/in/isaac-ikenna" 
+            href="https://www.instagram.com/dobre_secre?igsh=eDBsdzlwaXN5ODF5&utm_source=qr" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-400 transition-all duration-300 hover:bg-slate-700 hover:text-blue-400"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-400 transition-all duration-300 hover:bg-slate-700 hover:text-purple-400"
           >
             <FaInstagram className="text-lg" />
             <span className="sr-only">Instagram</span>

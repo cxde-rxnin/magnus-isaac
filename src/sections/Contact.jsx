@@ -67,7 +67,7 @@ const Contact = () => {
             </div>
             
             {/* Background Elements */}
-            <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-blue-500 opacity-5 blur-3xl"></div>
+            <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-purple-500 opacity-5 blur-3xl"></div>
             <div className="absolute -left-10 top-10 h-48 w-48 rounded-full bg-indigo-600 opacity-5 blur-3xl"></div>
           </div>
         </div>

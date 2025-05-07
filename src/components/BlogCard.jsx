@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const ProjectCard = ({ project }) => {
+const BlogCard = ({ project }) => {
   // Correctly handle the image path by prepending API_BASE_URL
   const imageUrl = project.image 
     ? `${import.meta.env.VITE_API_BASE_URL}/uploads/${project.image.replace('uploads/', '')}`
@@ -9,7 +9,7 @@ const ProjectCard = ({ project }) => {
     
   return (
     <Link 
-      to={`/project/${project._id}`} 
+      to={`/blog/${project._id}`} 
       className="block overflow-hidden rounded-xl bg-white/2 border border-white/10 shadow-xl backdrop-blur-3xl transition-all duration-300 hover:shadow-purple-500/20 hover:translate-y-[-4px]"
     >
       <div className="relative h-48 w-full overflow-hidden">
@@ -42,11 +42,11 @@ const ProjectCard = ({ project }) => {
           {project.description}
         </p>
         <div className="text-purple-400 bg-purple-400/10 text-center p-3 rounded-lg">
-          <span>View Project</span>
+          <span>Read Post</span>
         </div>
       </div>
     </Link>
   );
 };
 
-export default ProjectCard;
+export default BlogCard;

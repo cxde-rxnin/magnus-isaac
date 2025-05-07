@@ -81,7 +81,7 @@ const About = () => {
             href="/resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-flex items-center gap-2 rounded-full border border-white bg-swhite/20 px-8 py-3 text-xs font-medium uppercase tracking-wider text-white transition duration-300 hover:border-blue-500 hover:bg-blue-500/10 hover:text-blue-300"
+            className="mt-8 inline-flex items-center gap-2 rounded-full border border-white bg-swhite/20 px-8 py-3 text-xs font-medium uppercase tracking-wider text-white transition duration-300 hover:border-purple-500 hover:bg-purple-500/10 hover:text-purple-300"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -105,7 +105,7 @@ const About = () => {
           {techStack.map((tech, index) => (
             <div 
               key={index} 
-              className="group flex items-center justify-center rounded-md border border-slate-700/50 bg-slate-800/50 p-2 transition-all duration-300 hover:border-blue-500/50 hover:bg-blue-500/10"
+              className="group flex items-center justify-center rounded-md border border-slate-700/50 bg-slate-800/50 p-2 transition-all duration-300 hover:border-purple-500/50 hover:bg-purple-500/10"
               title={tech.name}
             >
               <img 
