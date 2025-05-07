@@ -11,14 +11,12 @@ const Projects = () => {
   const [showDebug, setShowDebug] = useState(false);
 
   useEffect(() => {
-    // Test API connection first
     const checkApiConnection = async () => {
       try {
         const testResult = await testApiConnection();
         setConnectionTest(testResult);
         console.log('API connection test result:', testResult);
         
-        // If connection test shows HTML response, display error
         if (testResult.isHtml) {
           setError('API returning HTML instead of JSON. Check your Vite proxy configuration.');
           setLoading(false);
@@ -28,22 +26,18 @@ const Projects = () => {
         console.error('Connection test error:', err);
       }
       
-      // Continue with projects fetch if connection test didn't fail
       getProjects();
     };
     
     const getProjects = async () => {
       try {
         const data = await fetchProjects();
-        // Ensure data is an array before setting it
         if (Array.isArray(data)) {
           setProjects(data);
         } else if (data && typeof data === 'object') {
-          // If data is an object that might contain an array of projects
           const projectsArray = data.projects || data.data || data.results || [];
           setProjects(Array.isArray(projectsArray) ? projectsArray : []);
         } else {
-          // Handle unexpected data format
           setProjects([]);
           setError('Received invalid data format from server');
           console.error('Invalid data format:', data);
@@ -62,7 +56,6 @@ const Projects = () => {
   return (
     <Section id="projects" className="bg-black">
       <div className="relative">
-        {/* Decorative background */}
         <div className="absolute inset-0 overflow-hidden opacity-5">
           <div className="absolute left-0 top-1/4 h-64 w-64 rounded-full bg-purple-500 blur-3xl"></div>
           <div className="absolute right-0 bottom-1/4 h-64 w-64 rounded-full bg-indigo-500 blur-3xl"></div>

@@ -16,7 +16,7 @@ const Footer = () => {
         
         <div className="flex items-center space-x-4">
           <a 
-            href="https://github.com/IrezD" 
+            href="https://github.com/Googleboy001" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-400 transition-all duration-300 hover:bg-slate-700 hover:text-purple-400"
@@ -25,7 +25,7 @@ const Footer = () => {
             <span className="sr-only">GitHub</span>
           </a>
           <a 
-            href="https://linkedin.com/in/isaac-ikenna" 
+            href="https://pl.linkedin.com/in/magnudroidsolutions" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-800 text-slate-400 transition-all duration-300 hover:bg-slate-700 hover:text-purple-400"

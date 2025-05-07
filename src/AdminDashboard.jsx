@@ -3,16 +3,13 @@ import {
   FaTimes as FaX,
   FaFolder as FaFolders,
   FaPlus,
-  FaUser,
   FaTrash,
-  FaNewspaper, // Icon for Blog
-  FaEdit,      // Icon for Edit button
+  FaNewspaper,
+  FaEdit,
 } from 'react-icons/fa';
 
-// API base URL from environment variable
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
-// Initial form state for projects
 const initialProjectFormData = {
   title: '',
   description: '',
@@ -21,23 +18,22 @@ const initialProjectFormData = {
   imagesToRemove: []
 };
 
-// Initial form state for blog posts
 const initialBlogFormData = {
   title: '',
   content: '',
-  author: 'Admin', // Default author
+  author: 'Admin',
   tags: [],
-  status: 'draft', // Default status
-  images: [],      // For new file uploads
-  imagesToRemove: [] // For existing image paths to remove
+  status: 'draft',
+  images: [],
+  imagesToRemove: []
 };
 
-// Main Dashboard component
 function AdminDashboard() {
-  // General State
+
+  //General State
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'));
-  const [generalError, setGeneralError] = useState(null); // For login or general dashboard errors
+  const [generalError, setGeneralError] = useState(null); 
   const [loadingLogin, setLoadingLogin] = useState(false);
 
   // Projects State
@@ -66,7 +62,7 @@ function AdminDashboard() {
     if (token) {
       setAuthToken(token);
       setIsLoggedIn(true);
-      fetchUserData(token); // Validate token and fetch user
+      fetchUserData(token);
     }
   }, []);
 
@@ -76,23 +72,24 @@ function AdminDashboard() {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) {
-        handleLogout(); // Token invalid or expired
+        handleLogout();
         setGeneralError('Session expired. Please log in again.');
       }
     } catch (err) {
       console.error('Error fetching user data:', err);
-      handleLogout(); // Network error or other issue
+      handleLogout();
       setGeneralError('Could not verify session. Please log in again.');
     }
   };
 
-  // Fetch data when logged in
   useEffect(() => {
     if (isLoggedIn) {
       fetchProjectsData();
       fetchBlogPostsData();
     }
   }, [isLoggedIn]);
+
+
 
   // --- API Calls ---
 
@@ -118,9 +115,8 @@ function AdminDashboard() {
     setLoadingBlogPosts(true);
     setErrorBlogPosts(null);
     try {
-      // Admin should fetch all posts, including drafts
       const response = await fetch(`${API_BASE_URL}/blogposts/all`, {
-        headers: { 'Authorization': `Bearer ${authToken}` } // Assuming /all endpoint is protected
+        headers: { 'Authorization': `Bearer ${authToken}` }
       });
       if (!response.ok) throw new Error(`API error: ${response.status} - ${response.statusText}`);
       const data = await response.json();
@@ -162,7 +158,7 @@ function AdminDashboard() {
     localStorage.removeItem('authToken');
     setIsLoggedIn(false);
     setAuthToken(null);
-    setProjects([]); // Clear data on logout
+    setProjects([]); 
     setBlogPosts([]);
   };
 
@@ -173,12 +169,11 @@ function AdminDashboard() {
   };
 
   const handleProjectTechInput = (e) => {
-    const value = e.target.value;
-    // Split by comma, trim whitespace, and filter out empty strings
-    const techArray = value
-      .split(',')
-      .map(tech => tech.trim())
-      .filter(tech => tech !== '');
+const value = e.target.value;
+const techArray = value
+  .split(',')
+  .map(tech => tech.trim())
+  .filter(tech => tech !== '');
     setProjectFormData(prev => ({
       ...prev,
       technologies: techArray
@@ -357,7 +352,7 @@ function AdminDashboard() {
     formDataToSend.append('author', blogFormData.author);
     formDataToSend.append('tags', JSON.stringify(blogFormData.tags));
     formDataToSend.append('status', blogFormData.status);
-    blogFormData.images.forEach(image => formDataToSend.append('images', image)); // Backend uses 'images' field for upload.array
+    blogFormData.images.forEach(image => formDataToSend.append('images', image));
 
     try {
       const response = await fetch(`${API_BASE_URL}/blogposts`, {
@@ -367,7 +362,7 @@ function AdminDashboard() {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Failed to create blog post');
-      setBlogPosts(prev => [data, ...prev].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))); // Keep sorted
+      setBlogPosts(prev => [data, ...prev].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
       setIsBlogModalOpen(false);
       resetBlogForm();
     } catch (err) { setErrorBlogPosts(err.message); }
@@ -459,11 +454,11 @@ function AdminDashboard() {
           <form className="mt-8 space-y-6" onSubmit={handleLogin}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-white">Email address</label>
-              <input id="email" name="email" type="email" required className="block w-full px-3 py-2 mt-1 border border-gray-600 bg-gray-700 text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              <input id="email" name="email" type="email" required className="block w-full px-3 py-2 mt-1 border border-gray-600 bg-white/5 backdrop-blur-3xl  text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-white">Password</label>
-              <input id="password" name="password" type="password" required className="block w-full px-3 py-2 mt-1 border border-gray-600 bg-gray-700 text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
+              <input id="password" name="password" type="password" required className="block w-full px-3 py-2 mt-1 border border-gray-600 bg-white/5 backdrop-blur-3xl  text-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" />
             </div>
             <div>
               <button type="submit" disabled={loadingLogin} className="flex justify-center w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50">
@@ -489,8 +484,8 @@ function AdminDashboard() {
         <main className="flex-1 overflow-auto p-6">
           {generalError && <div className="p-4 mb-4 text-sm text-red-100 bg-red-700 rounded-lg">{generalError}</div>}
 
-          {/* Stats Bar */}
           <div className="grid grid-cols-1 gap-6 mb-6 md:grid-cols-2 lg:grid-cols-4">
+
             {/* Projects Stats */}
             <div className="p-6 bg-white/5 border border-white/10 rounded-lg shadow">
               <div className="flex items-center">
@@ -501,6 +496,7 @@ function AdminDashboard() {
                 </div>
               </div>
             </div>
+
             {/* Blog Posts Stats */}
             <div className="p-6 bg-white/5 border border-white/10 rounded-lg shadow">
               <div className="flex items-center">
@@ -511,6 +507,7 @@ function AdminDashboard() {
                 </div>
               </div>
             </div>
+
             {/* Add Project Button */}
             <div className="p-6 bg-white/5 border border-white/10 rounded-lg shadow flex items-center justify-between">
                 <div>
@@ -521,6 +518,7 @@ function AdminDashboard() {
                     New Project
                 </button>
             </div>
+
             {/* Add Blog Post Button */}
             <div className="p-6 bg-white/5 border border-white/10 rounded-lg shadow flex items-center justify-between">
                 <div>
@@ -535,7 +533,7 @@ function AdminDashboard() {
 
           {/* Projects Section */}
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Projects Management</h2>
+            <h2 className="text-xl font-semibold mb-4">Your Projects </h2>
             {errorProjects && <div className="p-4 mb-4 text-sm text-red-100 bg-red-700 rounded-lg">{errorProjects}</div>}
             {loadingProjects ? <p>Loading projects...</p> : projects.length === 0 && !errorProjects ? <p>No projects found.</p> : (
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -550,8 +548,8 @@ function AdminDashboard() {
                       </div>
                     </div>
                     <div className="flex p-4 bg-black/20 justify-end space-x-2">
-                      <button onClick={() => openProjectEditModal(project)} className="px-3 py-1 text-sm text-white bg-purple-600/50 hover:bg-purple-500/50 rounded"><FaEdit className="inline mr-1"/> Edit</button>
-                      <button onClick={() => deleteProjectHandler(project._id)} className="px-3 py-1 text-sm text-white bg-red-600/50 hover:bg-red-500/50 rounded"><FaTrash className="inline mr-1"/> Delete</button>
+                      <button onClick={() => openProjectEditModal(project)} className="px-3 py-3 text-sm text-white bg-white/10 hover:bg-white/5 rounded-lg w-1/2"> Edit</button>
+                      <button onClick={() => deleteProjectHandler(project._id)} className="px-3 py-3 text-sm text-white bg-red-500 hover:bg-red-500/50 rounded-lg w-1/2">Delete</button>
                     </div>
                   </div>
                 ))}
@@ -561,7 +559,7 @@ function AdminDashboard() {
 
           {/* Blog Posts Section */}
           <div>
-            <h2 className="text-xl font-semibold mb-4">Blog Posts Management</h2>
+            <h2 className="text-xl font-semibold mb-4">Your Blogs</h2>
             {errorBlogPosts && <div className="p-4 mb-4 text-sm text-red-100 bg-red-700 rounded-lg">{errorBlogPosts}</div>}
             {loadingBlogPosts ? <p>Loading blog posts...</p> : blogPosts.length === 0 && !errorBlogPosts ? <p>No blog posts found.</p> : (
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -577,8 +575,8 @@ function AdminDashboard() {
                       </div>
                     </div>
                     <div className="flex p-4 bg-black/20 justify-end space-x-2">
-                      <button onClick={() => openBlogEditModal(post)} className="px-3 py-1 text-sm text-white bg-purple-600/50 hover:bg-purple-500/50 rounded"><FaEdit className="inline mr-1"/> Edit</button>
-                      <button onClick={() => deleteBlogPostHandler(post._id)} className="px-3 py-1 text-sm text-white bg-red-600/50 hover:bg-red-500/50 rounded"><FaTrash className="inline mr-1"/> Delete</button>
+                      <button onClick={() => openBlogEditModal(post)} className="px-3 py-3 text-sm text-white bg-white/10 hover:bg-white/5 rounded-lg w-1/2"> Edit</button>
+                      <button onClick={() => deleteBlogPostHandler(post._id)} className="px-3 py-3 text-sm text-white bg-red-500 hover:bg-red-500/50 rounded-lg w-1/2">Delete</button>
                     </div>
                   </div>
                 ))}
@@ -591,7 +589,7 @@ function AdminDashboard() {
       {/* Project Modal */}
       {isProjectModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg p-6 bg-gray-800 border border-white/20 rounded-lg shadow-xl overflow-y-auto max-h-[90vh]">
+          <div className="w-full max-w-lg p-6 bg-white/5 backdrop-blur-3xl  border border-white/20 rounded-lg shadow-xl overflow-y-auto max-h-[90vh]">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-medium">{projectModalMode === 'create' ? 'Create New Project' : 'Edit Project'}</h2>
               <button onClick={() => setIsProjectModalOpen(false)} className="text-gray-400 hover:text-white"><FaX /></button>
@@ -601,11 +599,11 @@ function AdminDashboard() {
               {/* Common Form Fields for Projects */}
               <div className="mb-4">
                 <label htmlFor="project-title" className="block mb-1 text-sm font-medium">Project Title</label>
-                <input type="text" id="project-title" name="title" value={projectFormData.title} onChange={handleProjectInputChange} className="block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required />
+                <input type="text" id="project-title" name="title" value={projectFormData.title} onChange={handleProjectInputChange} className="block w-full px-3 py-2 bg-white/5 backdrop-blur-3xl  border border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required />
               </div>
               <div className="mb-4">
                 <label htmlFor="project-description" className="block mb-1 text-sm font-medium">Description</label>
-                <textarea id="project-description" name="description" value={projectFormData.description} onChange={handleProjectInputChange} rows="3" className="block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required></textarea>
+                <textarea id="project-description" name="description" value={projectFormData.description} onChange={handleProjectInputChange} rows="3" className="block w-full px-3 py-2 bg-white/5 backdrop-blur-3xl  border border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required></textarea>
               </div>
               <div className="mb-4">
                 <label htmlFor="project-technologies" className="block mb-1 text-sm font-medium">Technologies (comma-separated)</label>
@@ -616,7 +614,7 @@ function AdminDashboard() {
                   value={projectFormData.technologies.join(', ')} 
                   onChange={handleProjectTechInput} 
                   placeholder="React, Node.js, MongoDB"
-                  className="block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500" 
+                  className="block w-full px-3 py-2 bg-white/5 backdrop-blur-3xl  border border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500" 
                 />
                 {projectFormData.technologies.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-2">
@@ -659,7 +657,7 @@ function AdminDashboard() {
       {/* Blog Post Modal */}
       {isBlogModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg p-6 bg-gray-800 border border-white/20 rounded-lg shadow-xl overflow-y-auto max-h-[90vh]">
+          <div className="w-full max-w-lg p-6 bg-white/5 backdrop-blur-3xl  border border-white/20 rounded-lg shadow-xl overflow-y-auto max-h-[90vh]">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-medium">{blogModalMode === 'create' ? 'Create New Blog Post' : 'Edit Blog Post'}</h2>
               <button onClick={() => setIsBlogModalOpen(false)} className="text-gray-400 hover:text-white"><FaX /></button>
@@ -668,20 +666,20 @@ function AdminDashboard() {
             <form onSubmit={blogModalMode === 'create' ? createBlogPostHandler : updateBlogPostHandler}>
               <div className="mb-4">
                 <label htmlFor="blog-title" className="block mb-1 text-sm font-medium">Title</label>
-                <input type="text" id="blog-title" name="title" value={blogFormData.title} onChange={handleBlogInputChange} className="block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500" required />
+                <input type="text" id="blog-title" name="title" value={blogFormData.title} onChange={handleBlogInputChange} className="block w-full px-3 py-2 bg-white/5 backdrop-blur-3xl  border border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500" required />
               </div>
               <div className="mb-4">
                 <label htmlFor="blog-content" className="block mb-1 text-sm font-medium">Content</label>
-                <textarea id="blog-content" name="content" value={blogFormData.content} onChange={handleBlogInputChange} rows="5" className="block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500" required></textarea>
+                <textarea id="blog-content" name="content" value={blogFormData.content} onChange={handleBlogInputChange} rows="5" className="block w-full px-3 py-2 bg-white/5 backdrop-blur-3xl  border border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500" required></textarea>
               </div>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <label htmlFor="blog-author" className="block mb-1 text-sm font-medium">Author</label>
-                  <input type="text" id="blog-author" name="author" value={blogFormData.author} onChange={handleBlogInputChange} className="block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500" />
+                  <input type="text" id="blog-author" name="author" value={blogFormData.author} onChange={handleBlogInputChange} className="block w-full px-3 py-2 bg-white/5 backdrop-blur-3xl  border border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500" />
                 </div>
                 <div>
                   <label htmlFor="blog-status" className="block mb-1 text-sm font-medium">Status</label>
-                  <select id="blog-status" name="status" value={blogFormData.status} onChange={handleBlogInputChange} className="block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500">
+                  <select id="blog-status" name="status" value={blogFormData.status} onChange={handleBlogInputChange} className="block w-full px-3 py-2 bg-white/5 backdrop-blur-3xl  border border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500">
                     <option value="draft">Draft</option>
                     <option value="published">Published</option>
                   </select>
@@ -696,7 +694,7 @@ function AdminDashboard() {
                   value={blogFormData.tags.join(', ')} 
                   onChange={handleBlogTagsInput}
                   placeholder="programming, web development, tutorial" 
-                  className="block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500" 
+                  className="block w-full px-3 py-2 bg-white/5 backdrop-blur-3xl  border border-gray-600 rounded-md focus:ring-green-500 focus:border-green-500" 
                 />
                 {blogFormData.tags.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-2">

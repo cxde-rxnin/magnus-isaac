@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ProjectCard = ({ project }) => {
-  // Correctly handle the image path by prepending API_BASE_URL
   const imageUrl = project.image 
     ? `${import.meta.env.VITE_API_BASE_URL}/uploads/${project.image.replace('uploads/', '')}`
     : '/placeholder-project.jpg';
@@ -19,8 +18,8 @@ const ProjectCard = ({ project }) => {
           className="h-full w-full object-cover transition-transform duration-500 hover:scale-110"
           onError={(e) => {
             console.error('Image failed to load:', imageUrl);
-            e.target.src = '/placeholder-project.jpg'; // Fallback on error
-            e.target.onerror = null; // Prevent infinite loop
+            e.target.src = '/placeholder-project.jpg';
+            e.target.onerror = null;
           }}
         />
       </div>

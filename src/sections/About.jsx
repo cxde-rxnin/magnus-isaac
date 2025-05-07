@@ -22,7 +22,6 @@ import miro from '../assets/miro.png';
 
 
 const About = () => {
-  // Array of tech stack items
   const techStack = [
     { name: "SAP", image: sap },
     { name: "Admin Center", image: Acog },
@@ -47,26 +46,20 @@ const About = () => {
   return (
     <Section id="profile" className='bg-black'>
       <div className="grid items-center gap-12 md:grid-cols-5 lg:gap-16">
-        {/* Image */}
         <div className="flex justify-center md:col-span-2 md:justify-end">
           <div className="relative">
-            {/* Glow effect */}
             <div className="absolute -left-4 -top-4 h-full w-full rounded-lg bg-white/10 blur-3xl"></div>
             
-            {/* Image */}
             <img 
               src={profilePic} 
               alt="Magnus Isaac" 
               className="relative h-auto w-full max-w-sm rounded-lg object-cover shadow-2xl transition-transform duration-500 hover:scale-[1.02]"
-              // style={{ boxShadow: '0 10px 30px -15px rgba(59, 130, 246, 0.5)' }}
             />
-            
-            {/* Decorative elements */}
-            <div className="absolute -bottom-3 -right-3 h-24 w-24 rounded-br-lg border-b-4 border-r-4 border-white"></div>
+
+              <div className="absolute -bottom-3 -right-3 h-24 w-24 rounded-br-lg border-b-4 border-r-4 border-white"></div>
           </div>
         </div>
         
-        {/* Text */}
         <div className="md:col-span-3">
           <h2 className="mb-6 text-4xl font-bold text-white md:text-5xl">
             About Me
@@ -76,7 +69,6 @@ const About = () => {
               <p>Emerging business analytics professional with extensive customer experience management background, seeking growth opportunities in developing organizations. Combines analytical expertise with strong problem-solving skills acquired through diverse roles in payment resolution, operations, and software development. Consistently exceeds targets through meticulous organization and prioritization, delivering high-quality results under pressure. Translates complex data into actionable insights with excellent communication skills, supporting data-driven decision-making across various professional settings.</p>
           </div>
           
-          {/* Resume Link */}
           <a
             href="/resume.pdf"
             target="_blank"
@@ -91,7 +83,6 @@ const About = () => {
         </div>
       </div>
       
-      {/* My Stack Section - as a separate section */}
       <div className="mt-16 pt-12 border-t border-slate-700/30">
         <h2 className="mb-5 text-3xl font-bold text-white">
           My Technical Stack

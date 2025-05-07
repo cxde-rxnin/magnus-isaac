@@ -11,7 +11,6 @@ const ProjectDetail = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        // Use a consistent API BASE URL from the apiService file
         const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
         const response = await axios.get(`${API_BASE_URL}/projects/${id}`);
         setProject(response.data);
@@ -26,15 +25,12 @@ const ProjectDetail = () => {
     fetchProject();
   }, [id]);
 
-  // Prepare image URL
   const getImageUrl = (imagePath) => {
     if (!imagePath) return '/placeholder-project.jpg';
-    // Use consistent API BASE URL
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
     return `${API_BASE_URL}/${imagePath}`;
   };
 
-  // Handle multiple images if available
   const getImages = () => {
     if (project.images && project.images.length > 0) {
       return project.images;
@@ -88,7 +84,6 @@ const ProjectDetail = () => {
   return (
     <div className="min-h-screen bg-black px-6 py-16 md:px-16 lg:px-24">
       <div className="mx-auto max-w-5xl">
-        {/* Back button - Go back in browser history */}
         <button 
           onClick={() => window.history.back()}
           className="mb-8 inline-flex items-center rounded-lg bg-slate-800/40 px-4 py-2 text-sm font-medium text-purple-300 transition-colors hover:bg-slate-700/40"
@@ -99,9 +94,8 @@ const ProjectDetail = () => {
           Back
         </button>
 
-        {/* Project header */}
         <div className="mb-8">
-          <h1 className="mb-4 text-9xl font-bold text-white mb-8">{project.title}</h1>
+          <h1 className="text-9xl font-bold text-white mb-8">{project.title}</h1>
           <div className="flex flex-wrap gap-2">
             {project.technologies?.map((tech, index) => (
               <span 
@@ -114,13 +108,11 @@ const ProjectDetail = () => {
           </div>
         </div>
 
-                {/* Project description */}
         <div className="mb-8 rounded-xl bg-slate-800/20 p-6 backdrop-blur-md">
           <h2 className="mb-4 text-2xl font-bold text-white">About the Project</h2>
           <p className="whitespace-pre-line text-slate-300">{project.description}</p>
         </div>
 
-        {/* Project images - Now supports multiple images */}
         {images.length > 0 ? (
           <div className="mb-8 flex flex-col">
             {images.map((img, index) => (

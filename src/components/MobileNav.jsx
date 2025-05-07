@@ -16,7 +16,6 @@ const MobileNav = () => {
 
   useEffect(() => {
     Events.scrollEvent.register('begin', () => {
-      // Close menu when navigation begins
       setIsMenuOpen(false);
     });
 
@@ -39,7 +38,6 @@ const MobileNav = () => {
 
   return (
     <div className="fixed top-0 left-0 z-50 w-full md:hidden">
-      {/* Mobile Header Bar */}
       <div className={`flex items-center justify-between ${isScrolled ? 'bg-black/90 backdrop-blur-md' : 'bg-transparent'} p-4 transition-all duration-300`}>
         <div className="flex items-center">
           <div className="text-xl font-bold text-white">Magnus Isaac</div>
@@ -61,7 +59,6 @@ const MobileNav = () => {
         </button>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       <div 
         className={`absolute top-full left-0 w-full overflow-hidden bg-black backdrop-blur-md transition-all duration-300 ${
           isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'

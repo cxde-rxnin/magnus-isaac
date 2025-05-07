@@ -1,12 +1,13 @@
 import React from 'react';
 import Section from '../components/Section';
 import { FaLinkedin, FaGithub, FaInstagram } from 'react-icons/fa';
+import bgImage from '../assets/pic-2.jpg';
 
 const Contact = () => {
   const contactInfo = {
-    linkedinUrl: "https://linkedin.com/in/dennis-iredia-owie",
-    githubUrl: "https://github.com/IrezD",
-    instaUrl: "https://instagram.com"
+    linkedinUrl: "https://pl.linkedin.com/in/magnudroidsolutions",
+    githubUrl: "https://github.com/Googleboy001",
+    instaUrl: "https://www.instagram.com/dobre_secre?igsh=eDBsdzlwaXN5ODF5&utm_source=qr"
   };
 
   return (
@@ -16,9 +17,8 @@ const Contact = () => {
           Get In Touch
         </h2>
         
-        <div className="mx-auto max-w-2xl">
+        <div className="mx-auto mb-16 max-w-2xl">
           <div className="relative z-10 overflow-hidden rounded-xl border border-slate-700/50 bg-white/5 p-8 backdrop-blur-sm">
-            {/* Social Links */}
             <div className="mb-10">
               <h3 className="mb-6 text-2xl font-semibold text-white">Connect With Me</h3>
               
@@ -55,20 +55,26 @@ const Contact = () => {
               </div>
             </div>
             
-            {/* Quote */}
-            <div className="rounded-lg border border-slate-700/30 bg-slate-800/20 p-6">
-              <h4 className="mb-4 font-medium text-bwhite">Favourite Quote</h4>
-              <blockquote className="relative">
-                <p className="mb-4 text-2xl italic leading-relaxed text-slate-200">
-                  "Find what you love and love more."
-                </p>
-                <footer className="text-right text-slate-400">~ Nayyirah Waheed</footer>
-              </blockquote>
-            </div>
-            
-            {/* Background Elements */}
             <div className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full bg-purple-500 opacity-5 blur-3xl"></div>
             <div className="absolute -left-10 top-10 h-48 w-48 rounded-full bg-indigo-600 opacity-5 blur-3xl"></div>
+          </div>
+        </div>
+        
+        <div className="mx-auto max-w-2xl">
+          <div className="relative z-10 overflow-hidden rounded-xl border border-slate-700/50 bg-white/5 p-8 backdrop-blur-sm">
+            <div className="relative h-96 rounded-lg border border-slate-700/30 bg-cover bg-top" style={{ backgroundImage: `url(${bgImage})` }}>
+              <div className="absolute inset-0 bg-black/75 w-full rounded-lg" />
+              
+              <div className="p-6">
+                <h4 className="mb-4 font-medium text-white relative">Favourite Quote</h4>
+                <blockquote className="relative">
+                  <p className="mb-4 text-4xl md:text-6xl italic leading-relaxed text-slate-200">
+                    "Find what you love and love more."
+                  </p>
+                  <footer className="text-right text-slate-400">~ Nayyirah Waheed</footer>
+                </blockquote>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ const BlogDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [autoSlideInterval, setAutoSlideInterval] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,14 +27,12 @@ const BlogDetail = () => {
     fetchPost();
   }, [id]);
 
-  // Prepare image URL
   const getImageUrl = (imagePath) => {
     if (!imagePath) return '/placeholder-blog.jpg';
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
     return `${API_BASE_URL}/uploads/${imagePath.replace('uploads/', '')}`;
   };
 
-  // Handle multiple images if available
   const getImages = () => {
     if (blogPost?.images && blogPost?.images.length > 0) {
       return blogPost.images;
@@ -43,7 +42,6 @@ const BlogDetail = () => {
     return [];
   };
 
-  // Navigation for vertical slider
   const nextSlide = () => {
     const images = getImages();
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -53,6 +51,16 @@ const BlogDetail = () => {
     const images = getImages();
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
+
+  useEffect(() => {
+    const images = getImages();
+    if (images.length > 1) {
+      const interval = setInterval(nextSlide, 5000);
+      setAutoSlideInterval(interval);
+      return () => clearInterval(interval);
+    }
+    return () => {};
+  }, [currentImageIndex]);
 
   if (loading) {
     return (
@@ -95,10 +103,14 @@ const BlogDetail = () => {
 
   const images = getImages();
 
+  const formatContentAsParagraphs = (content) => {
+    if (!content) return [];
+    return content.split(/(?<=[.!?])\s+/).filter(Boolean);
+  };
+
   return (
     <div className="min-h-screen bg-black px-6 py-16 md:px-16 lg:px-24">
       <div className="mx-auto max-w-5xl">
-        {/* Back button - Go back in browser history */}
         <button 
           onClick={() => navigate(-1)}
           className="mb-8 inline-flex items-center rounded-lg bg-slate-800/40 px-4 py-2 text-sm font-medium text-purple-300 transition-colors hover:bg-slate-700/40"
@@ -123,13 +135,11 @@ const BlogDetail = () => {
           </div>
         </div>
 
-                {/* Date Published */}
         <div className="mb-8">
           <h3 className="text-sm font-bold">Date Published:</h3>
           <p className="text-white/50 ">{new Date(blogPost.publishedAt).toLocaleDateString()}</p>
         </div>
 
-        {/* Blog images - Vertical slider */}
         {images.length > 0 ? (
           <div className="mb-8 relative">
             <div className="overflow-hidden rounded-xl">
@@ -172,13 +182,15 @@ const BlogDetail = () => {
           </div>
         )}
 
-        {/* Blog content */}
         <div className="w-full">
           <div className="content mt-6 text-white/75 font-medium line-clamp-0 whitespace-pre-line">
-            {blogPost.content}
+            {formatContentAsParagraphs(blogPost.content).map((paragraph, index) => (
+              <p key={index} className="mb-4 leading-relaxed">
+                {paragraph}
+              </p>
+            ))}
           </div>
         </div>
-
 
       </div>
     </div>
