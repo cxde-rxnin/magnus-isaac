@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MobileNav from './components/MobileNav';
@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import AdminDashboard from './AdminDashboard';
 import ProjectDetail from './components/ProjectDetail'; 
 import BlogDetail from './components/BlogDetail';
+import Loader from './components/Loader';
 
 // Main layout component for the homepage
 const MainLayout = () => (
@@ -52,6 +53,17 @@ const BlogLayout = () => (
 );
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <Router>
       <div className="flex flex-col min-h-screen bg-black text-white">
