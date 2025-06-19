@@ -58,14 +58,9 @@ const Welcome = () => {
           ))}
         </div>
 
-        <div className="md:mx-auto mb-10 w-full rounded-lg border border-slate-700/50 bg-slate-900/80 p-6 shadow-2xl backdrop-blur-md">
-          <div className="mb-4 flex items-center gap-1.5">
-            <div className="h-3 w-3 rounded-full bg-red-400"></div>
-            <div className="h-3 w-3 rounded-full bg-yellow-400"></div>
-            <div className="h-3 w-3 rounded-full bg-green-400"></div>
-          </div>
-          <p className="font-mono text-left text-xs md:text-lg">
-            <span className="text-slate-100">
+        <div className="md:mx-auto mb-10 w-full shadow-2xl backdrop-blur-md">
+          <p className="ibm-plex text-xs md:text-lg text-center px-20">
+            <span className="text-slate-100 ">
               {typedText}
               <span className="ml-1 animate-pulse">▎</span>
             </span>
